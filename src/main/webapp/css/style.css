@@ -1,0 +1,173 @@
+/* style.css */
+
+/* --- 全体設定 --- */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #fce4ec; /* ポップな薄いピンクの背景 */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    color: #e91e63; /* 鮮やかなピンク */
+    font-weight: 700;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ff80ab;
+    margin: 40px 0;
+}
+
+/* --- ヘッダー --- */
+.pop-header {
+    background-color: #ff80ab; /* 濃いピンク */
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pop-header h1 {
+    color: white;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.nav-bar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-bar a:hover {
+    color: #ffcdd2;
+}
+
+
+/* --- おすすめセクション --- */
+.recommendations h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.restaurant-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    width: 30%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s;
+    text-align: center;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-5px); /* マウスホバーで少し浮き上がる */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-image-placeholder {
+    height: 120px;
+    background-color: #ffe082; /* ポップな黄色 */
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-weight: 700;
+    color: #00bcd4; /* ポップな水色 */
+}
+
+/* --- レストラン一覧とソート --- */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sort-controls select, .search-btn {
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid #ff80ab;
+    font-size: 1em;
+}
+
+.search-btn {
+    background-color: #00bcd4;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #0097a7;
+}
+
+/* --- リスト（テーブル風） --- */
+.restaurant-table {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr 1fr; /* 4列のレイアウト */
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+}
+
+.header-row {
+    background-color: #ffcdd2; /* ヘッダーの背景色 */
+    font-weight: 700;
+    color: #e91e63;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.reserve-btn {
+    background-color: #4caf50; /* 予約ボタンの色 */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reserve-btn:hover {
+    background-color: #388e3c;
+}
+
+/* --- フッター --- */
+.pop-footer {
+    text-align: center;
+    background-color: #ff80ab;
+    color: white;
+    padding: 15px;
+    margin-top: 50px;
+}
