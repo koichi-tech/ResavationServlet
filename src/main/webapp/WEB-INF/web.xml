@@ -10,34 +10,15 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-    <servlet>
-    <description></description>
-    <display-name>InputSurvey</display-name>
-    <servlet-name>InputSurvey</servlet-name>
-    <servlet-class>work.InputSurvey</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InputSurvey</servlet-name>
-    <url-pattern>/InputSurvey</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>SaveSurvey</display-name>
-    <servlet-name>SaveSurvey</servlet-name>
-    <servlet-class>work.SaveSurvey</servlet-class>
+    <display-name>ResavationPlatForm</display-name>
+    <servlet-name>ResavationPlatForm</servlet-name>
+    <servlet-class>com.example.controller.ResavationPlatForm</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SaveSurvey</servlet-name>
-    <url-pattern>/SaveSurvey</url-pattern>
+    <servlet-name>ResavationPlatForm</servlet-name>
+    <url-pattern>/ResavationPlatForm</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ShowAllSurvey</display-name>
-    <servlet-name>ShowAllSurvey</servlet-name>
-    <servlet-class>work.ShowAllSurvey</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ShowAllSurvey</servlet-name>
-    <url-pattern>/ShowAllSurvey</url-pattern>
-  </servlet-mapping>
+ 
 </web-app>

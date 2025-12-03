@@ -92,7 +92,7 @@
 		<div class="login-container">
 			<h2>🔐 ログイン</h2>
 
-			<form action="login" method="POST">
+			<form action="LoginServlet" method="POST">
 				<div class="form-group">
 					<label for="mailAddress">メールアドレス</label> <input type="email"
 						id="mailAddress" name="mailAddress" required

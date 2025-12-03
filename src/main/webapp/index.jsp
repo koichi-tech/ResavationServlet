@@ -14,9 +14,10 @@
     <header class="pop-header">
         <h1>🍣 日野ナビ</h1>
         <nav class="nav-bar">
-            <a href="/login">ホーム</a>
+            <a href="/ResavationPlatForm">ホーム</a>
             <a href="">ランキング</a>
-            <a href="/mypage" id ="UserName" name="UserName">${sessionScope.UserName}</a>
+            <a href="/mypage" id ="UserName" name="UserName">${sessionScope.LOGIN_INFO.userName}</a>
+            <a href="/LogOut" id ="LogOut" name="LogOut">ログアウト</a>
         </nav>
     </header>
 

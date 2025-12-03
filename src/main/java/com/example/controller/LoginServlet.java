@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,15 +24,30 @@ import com.example.strategy.DatabaseAuthentication;
  * Servlet implementation class LoginServlet
  */
 
-@WebServlet("/login")
+
 public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	private BaseDao basedao;
-	private final UserDao userDao = new UserDao(basedao);
-	private final AuthService authService = new AuthService(
-	        new DatabaseAuthentication(userDao) // DatabaseAuthentication戦略を注入
+	private UserDao userDao;
+	private AuthService authService;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+	    super.init(config);
+	    
+	    // 1. BaseDaoのインスタンス化
+	    this.basedao = new BaseDao();
+	    
+	    // 2. ★JDBCドライバのロードを実行（BaseDaoのメソッドを呼び出す）
+	    this.basedao.loadDriver(); 
+	    
+	    // 3. 初期化済みの basedao を使って依存オブジェクトを初期化
+	    this.userDao = new UserDao(this.basedao);
+	    this.authService = new AuthService(
+	            new DatabaseAuthentication(this.userDao) 
 	    );
+	}
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -62,52 +78,56 @@ public class LoginServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		boolean loginSuccess = false;
-		
 
-		String UserName = request.getParameter("UserName");
+		//ローカル変数定義
 		String mailAddress = request.getParameter("mailAddress");
 	    String UserPassword = request.getParameter("UserPassword");
+		String forwardPath;	
+	    
+	    // 1. 既存セッションの有無を確認 (セッションがなければ null を返す)
+		//HttpSession existingSession = request.getSession(false); 
+	    User userInfoOnSession = null;
+	    HttpSession existingSession = request.getSession(false);
+	    if (existingSession != null) {
+	    	userInfoOnSession = (User) existingSession.getAttribute("LOGIN_INFO");
+	    }
+	  	    
+	    
+	    // 2. 既存セッション（ログイン済み）の有無確認
+	    if(userInfoOnSession != null) {
+			// 既にログイン済みならリダイレクト
+			response.sendRedirect(request.getContextPath() + "/ResavationPlatForm"); // 遷移先をコンテキストパス基準に修正
+			return;
+		}
+	    
+	    // 3. 認証処理実施
 	    loginSuccess = authService.login(mailAddress, UserPassword);
 	    
-		//セッションからユーザーデータを取得
-		HttpSession session           = request.getSession();
-		User userInfoOnSession = (User)session.getAttribute("LOGIN_INFO");
-	    
-	    
-		String forwardPath;	    
-		if(userInfoOnSession != null) {
-			response.sendRedirect("login");
-		}
-		
+	    // 4. 認証処理結果判定
 	    if(loginSuccess) {
+	    	//User情報取得
 	    	User loggedInUser = userDao.findUserName(mailAddress);
-	    		if(loggedInUser != null) {
-	    			String usernamefromdb = loggedInUser.getUserName();
-	                // 【✨修正箇所✨】認証成功時: リダイレクトを使ってURLを変更する
-	                
-	                // 1. セッションにログイン状態を記録 (推奨)
-	    	    	request.getSession().setAttribute("UserName", usernamefromdb);
-	                request.getSession().setAttribute("isLoggedIn", true); 
-	                request.getSession().setAttribute("mailAddress", mailAddress);
-	                // 2. リダイレクトを実行
-	                // request.getContextPath() で /ResavationPlatForm のようなコンテキストルートを取得
-	                forwardPath = "/index.jsp"; 
-
-	                // 3. フォワードを実行
-	                RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
-	                dispatcher.forward(request, response);
-
-	                return;
-	    		} else {
-	    			
-	    		}
+	    	if(loggedInUser != null) {
+	    		
+	    		// 【✨修正箇所✨】認証成功時: セッションを**取得（存在しない場合は新規作成）**する
+	    		HttpSession session = request.getSession(); // getSession() は (true) と同等
+	    		session.setAttribute("LOGIN_INFO", loggedInUser);
+	    	    
+	            // 2. リダイレクトを実行 (フォワードではなくリダイレクトが望ましい)
+	            response.sendRedirect(request.getContextPath() + "/ResavationPlatForm");
+	            return;
+	    	} 
 	    }
 	    
-	  //ログイン失敗後の画面遷移は、そのまま
+	    // 5. ログイン失敗後の画面遷移
+		request.setAttribute("errorMessage", "メールアドレスまたはパスワードが正しくありません。"); // エラーメッセージを追加
 		forwardPath = "login_index.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
 	    dispatcher.forward(request, response);
 	
 	}
+	
+	
+	
 
 }

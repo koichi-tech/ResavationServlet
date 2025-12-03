@@ -8,7 +8,7 @@ import com.example.strategy.AuthenticationStrategy;
 public class User {
 	
 	private Long userId;
-    private String UserName;
+    private String userName;
     private Integer gender;
     private LocalDate birthday;
     private String mailAddress;
@@ -28,7 +28,7 @@ public class User {
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public Integer getGender() {
@@ -66,7 +66,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        this.UserName = userName;
+        this.userName = userName;
     }
 
     public void setGender(Integer gender) {

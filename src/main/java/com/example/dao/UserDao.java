@@ -21,63 +21,36 @@ public class UserDao extends BaseDao{
 	
 	
 	public User findUserName(String mailAddress) {
-		
-		loadDriver();
-		User user = null;
-		
-        String SQL_SELECT_LOGIN = "SELECT USER_NAME,MAIL_ADDRESS,USER_PASSWORD FROM users where MAIL_ADDRESS = ?";
-        try (Connection conn = getConnection(); 
-                PreparedStatement ps = conn.prepareStatement(SQL_SELECT_LOGIN))	{
-			    ps.setString(1,mailAddress);
-			    
-			    try (ResultSet rs = ps.executeQuery()) {
-		            
-		            // ?に値を入れたい：ここで結果セットからデータを取り出してUserオブジェクトを作成します
-		            // ユーザーが見つかった場合
-		            if (rs.next()) {
-		                user = new User();
-		                // ResultSetからUSER_NAME列とUSER_PASSWORD列の値を取得し、Userオブジェクトに設定
-		                user.setUserName(rs.getString("USER_NAME"));
-		                user.setMailAddress(rs.getString("MAIL_ADDRESS")); 
-		                user.setUserPassword(rs.getString("USER_PASSWORD"));
-		            }
-		        }
-		   	
-		}catch (SQLException e){
-			System.err.println("SQL Error finding user: " + e.getMessage());
-		}
-		
-		return user;
+	    
+	    // loadDriver() は削除
+	    User user = null;
+	    
+	    String SQL_SELECT_LOGIN = "SELECT USER_NAME,MAIL_ADDRESS,USER_PASSWORD FROM t_user where MAIL_ADDRESS = ?";
+	    
+	    // this.basedao を使用して Connection を取得
+	    try (Connection conn = this.basedao.getConnection(); 
+	            PreparedStatement ps = conn.prepareStatement(SQL_SELECT_LOGIN))	{
+	        
+	        ps.setString(1,mailAddress);
+	        
+	        try (ResultSet rs = ps.executeQuery()) {
+	            
+	            if (rs.next()) {
+	                user = new User();
+	                user.setUserName(rs.getString("USER_NAME"));
+	                user.setMailAddress(rs.getString("MAIL_ADDRESS")); 
+	                user.setUserPassword(rs.getString("USER_PASSWORD"));
+	            }
+	        }
+	           	
+	    }catch (SQLException e){
+	        // 開発環境では詳細なログ出力が有用
+	        System.err.println("SQL Error finding user: " + e.getMessage());
+	        // 本番環境ではより安全なログ記録と例外の再スローを検討
+	    }
+	    
+	    return user;
 	}
-	
-	
-	public List<UserDto> doSelect() {
-        List<UserDto> answerList = new ArrayList<>();
-        String SQL_SELECT_LOGIN = "SELECT MAIL_ADDRESS,USER_PASSWORD FROM users";
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, USER_ID, USER_PASS);
-             PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_LOGIN);
-             ResultSet rs = pstmt.executeQuery()) {
-             
-            // 結果セットをAnswerオブジェクトに詰め替える
-        	// ResultSet rs から値をDTOにセットする部分
-        	while (rs.next()) {
-        	    UserDto answer = new UserDto();
-        	    
-        	    // 1. UserName: String型
-        	    answer.setUserName(rs.getString("userName"));
-        	    
-        	    // 2. UserPassword: String型
-        	    answer.setUserPassword(rs.getString("userPassword"));
-        	     
-        	    
-        	    answerList.add(answer);
-        	}
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // 実際には例外をスローするなど、より丁寧なエラー処理が必要
-        }
-        return answerList;
-    }
 
 
 }
