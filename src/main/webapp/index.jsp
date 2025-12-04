@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,10 +15,10 @@
     <header class="pop-header">
         <h1>🍣 日野ナビ</h1>
         <nav class="nav-bar">
-            <a href="/ResavationPlatForm">ホーム</a>
+            <a href="${pageContext.request.contextPath}/ResavationPlatForm">ホーム</a>
             <a href="">ランキング</a>
             <a href="/mypage" id ="UserName" name="UserName">${sessionScope.LOGIN_INFO.userName}</a>
-            <a href="/LogOut" id ="LogOut" name="LogOut">ログアウト</a>
+            <a href="${pageContext.request.contextPath}/LogoutServlet" id ="Logout" name="Logout">ログアウト</a>
         </nav>
     </header>
 

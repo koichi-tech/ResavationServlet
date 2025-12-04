@@ -85,7 +85,6 @@ public class LoginServlet extends HttpServlet{
 		String forwardPath;	
 	    
 	    // 1. 既存セッションの有無を確認 (セッションがなければ null を返す)
-		//HttpSession existingSession = request.getSession(false); 
 	    User userInfoOnSession = null;
 	    HttpSession existingSession = request.getSession(false);
 	    if (existingSession != null) {
